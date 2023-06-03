@@ -1,0 +1,160 @@
+MySQL Shell 8.0.33
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ***************
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): N
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 19
+Server version: 8.0.33 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > \use eva_3
+Default schema set to `eva_3`.
+Fetching global names, object names from `eva_3` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  eva_3  SQL > show tables;
++-----------------+
+| Tables_in_eva_3 |
++-----------------+
+| fechas          |
+| personas        |
++-----------------+
+2 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > set @mensaje = "";
+Query OK, 0 rows affected (0.0003 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select @mensaje;
++----------+
+| @mensaje |
++----------+
+|          |
++----------+
+1 row in set (0.0003 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > insert into personas(
+                                      -> nombre)
+                                      -> values("juan");
+ERROR: 1364 (HY000): Field 'apellido_pat' doesn't have a default value
+ MySQL  localhost:3306 ssl  eva_3  SQL > insert into personas(nombre) values("juan");
+ERROR: 1364 (HY000): Field 'apellido_pat' doesn't have a default value
+ MySQL  localhost:3306 ssl  eva_3  SQL > insert into personas(nombre) values("Marcela");
+ERROR: 1364 (HY000): Field 'apellido_pat' doesn't have a default value
+ MySQL  localhost:3306 ssl  eva_3  SQL > insert into personas(nombre, apellido_pat) values("Marcela","Rosales");
+Query OK, 1 row affected (0.0073 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select @mensaje;
++-------------------------------+
+| @mensaje                      |
++-------------------------------+
+| PERSONA INSERTADA CON ÉXITO!! |
++-------------------------------+
+1 row in set (0.0004 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > show trigger;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'trigger' at line 1
+ MySQL  localhost:3306 ssl  eva_3  SQL > create table auditoria_per(
+                                      -> id_perso int,
+                                      -> nombre_per varchar(50),
+                                      -> ap_pat_per varchar(50),
+                                      -> ap_mat_per varchar(50),
+                                      -> fecha_nac_per date,
+                                      -> rfc varchar(20));
+Query OK, 0 rows affected (0.0243 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > desc auditoria_per;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| id_perso      | int         | YES  |     | NULL    |       |
+| nombre_per    | varchar(50) | YES  |     | NULL    |       |
+| ap_pat_per    | varchar(50) | YES  |     | NULL    |       |
+| ap_mat_per    | varchar(50) | YES  |     | NULL    |       |
+| fecha_nac_per | date        | YES  |     | NULL    |       |
+| rfc           | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+6 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select * from personas
+                                      -> ;
++----+-------------+--------------+--------------+------------+-----------+
+| id | nombre      | apellido_pat | apellido_mat | fecha_nac  | clave_rfc |
++----+-------------+--------------+--------------+------------+-----------+
+|  1 | Raúl        | Alberto      | Chávez       | 1980-07-20 | NULL      |
+|  2 | Karla       | Ramírez      | Portillo     | 1970-12-25 | NULL      |
+|  3 | Leonardo    | González     | Carmona      | 2000-03-15 | NULL      |
+|  4 | Linda       | Rentería     | Gutierrez    | 1996-02-24 | NULL      |
+|  5 | Ricardo     | Salamanca    | Mendez       | 1983-01-07 | NULL      |
+|  6 | Ramses      | Salmeron     | Robles       | 1989-07-18 | NULL      |
+|  7 | Valeria     | Prieto       | Valdez       | 1997-09-02 | NULL      |
+|  8 | Alejandra   | Luján        | Sarmiento    | 1978-10-22 | NULL      |
+|  9 | Christopher | Reyes        | Marquez      | 1998-06-10 | NULL      |
+| 10 | Richtofen   | Meyer        | NULL         | 1987-01-28 | NULL      |
+| 11 | Marcela     | Rosales      | NULL         | NULL       | NULL      |
++----+-------------+--------------+--------------+------------+-----------+
+11 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > update personas
+                                      -> set nombre = "Prueba",
+                                      -> apellido_pat = "Prueba",
+                                      -> apellido_mat = "Prueba",
+                                      -> fecha_nac = '2020-10-10',
+                                      -> clave_rfc = "XXX00000000"
+                                      -> where id = 8;
+Query OK, 1 row affected (0.0090 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  eva_3  SQL > select * from personas where id = 8;
++----+--------+--------------+--------------+------------+-------------+
+| id | nombre | apellido_pat | apellido_mat | fecha_nac  | clave_rfc   |
++----+--------+--------------+--------------+------------+-------------+
+|  8 | Prueba | Prueba       | Prueba       | 2020-10-10 | XXX00000000 |
++----+--------+--------------+--------------+------------+-------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > update personas set apellido_mat = "", where id = 9;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id = 9' at line 1
+ MySQL  localhost:3306 ssl  eva_3  SQL > update personas set apellido_mat = '', where id = 9;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id = 9' at line 1
+ MySQL  localhost:3306 ssl  eva_3  SQL > update personas set apellido_mat = '', where id = 10;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id = 10' at line 1
+ MySQL  localhost:3306 ssl  eva_3  SQL > update personas set nombre = "Richtofen", apellido_pat = "Meyer", apellido_mat = '', where id = 10;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id = 10' at line 1
+ MySQL  localhost:3306 ssl  eva_3  SQL > update personas set apellido_mat = '' where id = 10;
+Query OK, 1 row affected (0.0073 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  eva_3  SQL > desc personas;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id           | int         | NO   | PRI | NULL    | auto_increment |
+| nombre       | varchar(30) | NO   |     | NULL    |                |
+| apellido_pat | varchar(40) | NO   |     | NULL    |                |
+| apellido_mat | varchar(40) | YES  |     | NULL    |                |
+| fecha_nac    | date        | YES  |     | NULL    |                |
+| clave_rfc    | varchar(13) | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+6 rows in set (0.0018 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select * from personas;
++----+-------------+--------------+--------------+------------+-------------+
+| id | nombre      | apellido_pat | apellido_mat | fecha_nac  | clave_rfc   |
++----+-------------+--------------+--------------+------------+-------------+
+|  1 | Raúl        | Alberto      | Chávez       | 1980-07-20 | NULL        |
+|  2 | Karla       | Ramírez      | Portillo     | 1970-12-25 | NULL        |
+|  3 | Leonardo    | González     | Carmona      | 2000-03-15 | NULL        |
+|  4 | Linda       | Rentería     | Gutierrez    | 1996-02-24 | NULL        |
+|  5 | Ricardo     | Salamanca    | Mendez       | 1983-01-07 | NULL        |
+|  6 | Ramses      | Salmeron     | Robles       | 1989-07-18 | NULL        |
+|  7 | Valeria     | Prieto       | Valdez       | 1997-09-02 | NULL        |
+|  8 | Prueba      | Prueba       | Prueba       | 2020-10-10 | XXX00000000 |
+|  9 | Christopher | Reyes        | Marquez      | 1998-06-10 | NULL        |
+| 10 | Richtofen   | Meyer        |              | 1987-01-28 | NULL        |
+| 11 | Marcela     | Rosales      | NULL         | NULL       | NULL        |
++----+-------------+--------------+--------------+------------+-------------+
+11 rows in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select max(actor_id) from actor;
+ERROR: 1146 (42S02): Table 'eva_3.actor' doesn't exist
+ MySQL  localhost:3306 ssl  eva_3  SQL > insert into actor (first_name, last_name)
+                                      -> values("prueba", "prueba");
+ERROR: 1146 (42S02): Table 'eva_3.actor' doesn't exist
+ MySQL  localhost:3306 ssl  eva_3  SQL >  select * from actor;
+ERROR: 1146 (42S02): Table 'eva_3.actor' doesn't exist
+ MySQL  localhost:3306 ssl  eva_3  SQL >
