@@ -1,0 +1,68 @@
+MySQL Shell 8.0.33
+
+Copyright (c) 2016, 2023, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  JS > \sql
+Switching to SQL mode... Commands end with ;
+ MySQL  SQL > \connect --mc root@localhost
+Creating a Classic session to 'root@localhost'
+Please provide the password for 'root@localhost': ***************
+Save password for 'root@localhost'? [Y]es/[N]o/Ne[v]er (default No): N
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 29
+Server version: 8.0.33 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > \use eva_3
+Default schema set to `eva_3`.
+Fetching global names, object names from `eva_3` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  eva_3  SQL > select regresa_uno();
++---------------+
+| regresa_uno() |
++---------------+
+|             1 |
++---------------+
+1 row in set (0.0049 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select regresa_mensaje("Pikachu");
++----------------------------+
+| regresa_mensaje("Pikachu") |
++----------------------------+
+|  holaPikachu               |
++----------------------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select regresa_mensaje(" Pikachu") as mensaje;
++---------------+
+| mensaje       |
++---------------+
+|  hola Pikachu |
++---------------+
+1 row in set (0.0005 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > create table actor select * from sakila.actor;
+Query OK, 200 rows affected (0.6407 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > desc actor;
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| Field       | Type              | Null | Key | Default           | Extra                                         |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+| actor_id    | smallint unsigned | NO   |     | 0                 |                                               |
+| first_name  | varchar(45)       | NO   |     | NULL              |                                               |
+| last_name   | varchar(45)       | NO   |     | NULL              |                                               |
+| last_update | timestamp         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------+-------------------+------+-----+-------------------+-----------------------------------------------+
+4 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select count(*) from actor;
++----------+
+| count(*) |
++----------+
+|      200 |
++----------+
+1 row in set (0.0072 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL > select contar_actor();
++----------------+
+| contar_actor() |
++----------------+
+|            200 |
++----------------+
+1 row in set (0.0060 sec)
+ MySQL  localhost:3306 ssl  eva_3  SQL >
